@@ -1,0 +1,41 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: studentModule
+          uri: http://localhost:8081/
+          predicates:
+          - Path=/student/**
+        - id: verifyModule
+          uri: http://localhost:8083/
+          predicates:
+          - Path=/verify/**
+        - id: transcriptModule
+          uri: http://localhost:8082/
+          predicates:
+          - Path=/transcript/**
+        - id: notifyModule
+          uri: http://localhost:8085/
+          predicates:
+          - Path=/notify/**
+          filters:
+          - name: RequestRateLimiter
+            args:
+              redis-rate-limiter:
+                replenishRate: 100
+                burstCapacity: 100
+                requestedTokens: 1
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+
+#replenishRate:1 số trung bình request có thể xử lý trong một giây là 1
+#burstCapacity:2 số lượng tối đa request có thể tiếp nhận trong một giây là 2.
+#  Giây đầu tiên có 2 request thì giây thứ 2 không có request nào đến, thì trung bình 1 request / 1 giây vẫn trong giới hạn của Rate Limiter
+#. Giây thứ 3, Gateway có thể nhận tiếp 1 request.
