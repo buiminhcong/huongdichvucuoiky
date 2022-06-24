@@ -27,7 +27,7 @@ public class Controller {
     @Autowired
     HttpSession session;
 
-    @GetMapping("/a")
+    @GetMapping("/view")
     public String login(Model model){
         FormInput formInput = new FormInput();
         model.addAttribute("formInput", formInput);
@@ -39,7 +39,7 @@ public class Controller {
 
 
 
-    @GetMapping("/b")
+    @GetMapping("/viewsemester")
     public String viewPoint(@RequestParam("key") String text, Model model){
         System.out.println(text);
         String year = "";

@@ -18,12 +18,12 @@
     </tr>
 </table>
 
-<a  style="  color: white" class="btn btn-primary"  th:href="@{/client/a}" role="button">Quay lại</a>
+<a  style="  color: white" class="btn btn-primary"  th:href="@{/client/view}" role="button">Quay lại</a>
 
 <p >Nhập kỳ(ví dụ): 2018-2019-1</p>
 <div style="padding: 10px 16px; margin-left: -16px" class="input-group">
 
-    <form method="get" th:action="@{/client/b}">
+    <form method="get" th:action="@{/client/viewsemester}">
         <div class="input-group">
             <input autofocus="true" type="text" name="key" placeholder="Nhập kỳ học, năm học" />
             <button type="submit"  class="btn btn-primary">
