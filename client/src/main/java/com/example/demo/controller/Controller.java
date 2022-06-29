@@ -40,14 +40,13 @@ public class Controller {
 
 
     @GetMapping("/viewsemester")
-    public String viewPoint(@RequestParam("key") String text, Model model){
+    public String viewPoint(@RequestHeader(value="User-Agent") String token, @RequestParam("key") String text, Model model){
         System.out.println(text);
         String year = "";
         String semester = "";
         FormInput formInput = new FormInput();
         String s = text.trim();
         List<Transcript> list = new ArrayList<>();
-        String token = "123ABC";
         String studentCode = "B18DCCN056";
         String name = "Bùi Minh Công";
         if (s.contains("-")) {
