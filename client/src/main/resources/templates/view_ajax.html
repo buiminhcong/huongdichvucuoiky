@@ -1,0 +1,29 @@
+<h5 class="text-danger" th:text="${sai}"></h5>
+
+
+<table class="table table-bordered table-striped mb-0">
+    <thead>
+    <tr>
+        <th scope="col">STT</th>
+        <th scope="col">Tên môn</th>
+        <th scope="col">Số Tín chỉ</th>
+        <th scope="col">Điểm hệ 10</th>
+        <th scope="col">Điểm hệ 4</th>
+        <th scope="col">Kết quả</th>
+        <th scope="col">GPA </th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item,index : ${list}" >
+        <th scope="row" th:text="*{index.index + 1}"></th>
+        <th  th:text="*{item.subject.name}"></th>
+        <td th:text="*{item.subject.credits}" ></td>
+        <td th:text="*{item.pointString}" ></td>
+        <td th:text="*{item.fourPoint}" ></td>
+        <td th:text="*{item.result}" ></td>
+        <td th:text="*{item.fourPointAvg}" ></td>
+    </tr>
+
+    </tbody>
+</table>

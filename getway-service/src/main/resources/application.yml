@@ -11,6 +11,13 @@ spring:
           uri: http://localhost:8081/
           predicates:
           - Path=/student/**
+          filters:
+          - name: RequestRateLimiter
+            args:
+              redis-rate-limiter:
+                replenishRate: 1
+                burstCapacity: 1
+                requestedTokens: 1
         - id: verifyModule
           uri: http://localhost:8083/
           predicates:
@@ -27,8 +34,8 @@ spring:
           - name: RequestRateLimiter
             args:
               redis-rate-limiter:
-                replenishRate: 100
-                burstCapacity: 100
+                replenishRate: 1
+                burstCapacity: 2
                 requestedTokens: 1
   redis:
     database: 0

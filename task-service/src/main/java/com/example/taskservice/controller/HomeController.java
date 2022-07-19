@@ -8,12 +8,15 @@ import com.example.taskservice.dto.Token;
 import com.example.taskservice.entity.Student;
 import com.example.taskservice.entity.Transcript;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -25,33 +28,38 @@ public class HomeController {
     CallIPI callIPI;
 
     @PostMapping("")
-    public List<Transcript> getTranscript(@RequestBody FormInput formInput){
+    public List<Transcript> getTranscript(@RequestBody FormInput formInput) {
+//@RequestHeader(name = "Authorization") String token1
+        System.out.println(formInput.getToken());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.add("Authorization", formInput.getToken());
+        HttpEntity<String> entity = new HttpEntity<>("body", headers);
         List<Transcript> list = new ArrayList<>();
-        Student student = callIPI.getStudentByCode(formInput.getStudentCode());
-        System.out.println(student.toString());
+        try {
 
-        if(student!=null){
-            Token token = new Token();
-            token.setToken(student.getToken());
-            token.setStudentCode(student.getStudentCode());
-            System.out.println(token.toString());
-            String checkToken = callIPI.verify(token);
-            if(checkToken.equals("true")){
-                System.out.println("check = true");
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.exchange("https://dev-r9ns-whp.us.auth0.com/api/v2/branding",
+                    HttpMethod.GET, entity, String.class);
+            System.out.println("Xac thuc token thanh cong!");
 
-                list = callIPI.getTranScriptBySemesterAndYear(formInput.getStudentCode(), formInput.getSemester(), formInput.getYear() );
-                if(list.size()>0){
-                    Response response = new Response();
-                    response.setStudentCode(student.getStudentCode());
-                    response.setGpa(String.valueOf(list.get(0).getFourPointAvg()));
-                    String send = callIPI.notify(response );
+
+            Student student = callIPI.getStudentByCode(formInput.getStudentCode());
+            if (student != null) {
+                list = callIPI.getTranScriptBySemesterAndYear(formInput.getStudentCode(), formInput.getSemester(), formInput.getYear());
+                if (list.size() > 0) {
+                    System.out.println("Da xem diem thanh cong");
+                    String send = callIPI.notify(student.getName(), student.getPhone(),String.valueOf(list.get(0).getFourPointAvg())  );
+                    System.out.println(send);
                 }
-                System.out.println(list.size());
-             }else {
-                System.out.println("check token khac true");
+            } else {
+                System.out.println("Student null");
             }
-        }else {
-            System.out.println("Student null");
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("That bai!");
         }
         return list;
     }

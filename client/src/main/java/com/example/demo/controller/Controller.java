@@ -18,15 +18,9 @@ import java.util.List;
 @RequestMapping("/client")
 public class Controller {
 
-    @Autowired
-    RestTemplate restTemplate;
 
     @Autowired
     CallIPI callIPI;
-
-    @Autowired
-    HttpSession session;
-
     @GetMapping("/view")
     public String login(Model model){
         FormInput formInput = new FormInput();
@@ -40,15 +34,15 @@ public class Controller {
 
 
     @GetMapping("/viewsemester")
-    public String viewPoint(@RequestHeader(value="User-Agent") String token, @RequestParam("key") String text, Model model){
-        System.out.println(text);
+    public String viewPoint(@RequestHeader(name = "Authorization") String token, @RequestParam("key") String text, Model model){
+        System.out.println(token);
         String year = "";
         String semester = "";
         FormInput formInput = new FormInput();
         String s = text.trim();
         List<Transcript> list = new ArrayList<>();
-        String studentCode = "B18DCCN056";
-        String name = "Bùi Minh Công";
+        String studentCode = "B18DCCN419";
+        String name = "Nguyen Huu Mung";
         if (s.contains("-")) {
             String[] arr = s.split("-");
             if (arr.length == 3) {
@@ -60,6 +54,7 @@ public class Controller {
                 formInput.setSemester(semester);
                 formInput.setYear(year);
                 System.out.println(formInput.toString());
+
                 list = callIPI.getTranScriptBySemesterAndYear(formInput);
 
                 if(list.size()>0){
@@ -70,22 +65,22 @@ public class Controller {
 
 
                 }else {
-                    model.addAttribute("sai", "Nhập sai!");
+                    model.addAttribute("sai", "Không có dữ liệu!");
                     model.addAttribute("list", list);
                 }
 
             }
             else {
-                model.addAttribute("sai", "Nhập sai!");
+                model.addAttribute("sai", "Không có dữ liệu!");
                 model.addAttribute("list", list);
             }
 
         } else {
-            model.addAttribute("sai", "Nhập sai!");
+            model.addAttribute("sai", "Không có dữ liệu!");
             model.addAttribute("list", list);
         }
        model.addAttribute("name", name);
-        return "view";
+        return "view_ajax";
     }
 
 }

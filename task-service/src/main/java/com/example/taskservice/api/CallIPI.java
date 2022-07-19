@@ -7,6 +7,7 @@ import com.example.taskservice.entity.Student;
 import com.example.taskservice.entity.Transcript;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -18,14 +19,11 @@ public class CallIPI {
     @Autowired
     RestTemplate restTemplate;
 
-    public String verify(Token token) {
-       String checkToken = restTemplate.postForObject("http://verify-service/verify",
-               token, String.class);
-        return checkToken;
-    }
-    public String notify(Response response) {
-        String noti = restTemplate.postForObject("http://notify-service/notify/send",
-                response, String.class);
+    // http://localhost:9000/ or http://gateway-service/*
+
+    public String notify(String name,String phone, String gpa) {
+        String noti = restTemplate.getForObject("http://notify-service/notify/sendSMS?name={name}&phone={phone}&gpa={gpa}",
+                 String.class, name, phone, gpa);
         return noti;
     }
 

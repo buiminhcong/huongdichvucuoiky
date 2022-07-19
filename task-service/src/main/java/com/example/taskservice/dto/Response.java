@@ -16,4 +16,12 @@ public class Response {
         this.studentCode = studentCode;
         this.gpa = gpa;
     }
+
+    @Override
+    public String toString() {
+        return "Response{" +
+                "studentCode='" + studentCode + '\'' +
+                ", gpa='" + gpa + '\'' +
+                '}';
+    }
 }

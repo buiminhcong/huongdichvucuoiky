@@ -44,7 +44,7 @@ public class StudentServiceImpl implements StudentService {
     public String sendOTP(String code, String gpa) {
         Response response = null;
         Student s = getStudentByCodeAndPassword(code);
-
+        System.out.println(s.toString());
 
         try {
             PhoneNumber to = new PhoneNumber(s.getPhone());
@@ -52,11 +52,12 @@ public class StudentServiceImpl implements StudentService {
 
             String otpMessage = "Chào "+s.getName()+  "GPA hiện tại của bạn là: " + gpa
                     + "##";
-            Message message = Message.creator(to, from, otpMessage).create();
-
+            Message.creator(to,
+                    from,otpMessage ).create();
             return "true";
 
         } catch (Exception e) {
+            e.printStackTrace();
             return "false";
         }
     }

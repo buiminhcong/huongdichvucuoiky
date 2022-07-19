@@ -17,9 +17,9 @@ public class VerifyServiceApplication {
     public TwilioConfig tiwilioConfig() {
 
         TwilioConfig twilioConfig = new TwilioConfig();
-        twilioConfig.setAccountSid("ACbd4fa3512ad92bb410ae0c574b4915f0");
-        twilioConfig.setAuthToken("88d9b5f41da1b38620b39f80b0b30ef0");
-        twilioConfig.setTrialNumber("+18173826764");
+        twilioConfig.setAccountSid("AC7815366b4b39930807b54cbed6f9df1c");
+        twilioConfig.setAuthToken("e991c02fd4ae0f7d670cee85d05f5729");
+        twilioConfig.setTrialNumber("+18597106546");
         return twilioConfig;
     }
 }

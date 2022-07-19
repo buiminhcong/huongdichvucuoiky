@@ -15,11 +15,6 @@ public class TranscriptController {
     @Autowired
     TranscriptService transcriptService;
 
-//    @GetMapping("/get-all/{code}")
-//    public List<Transcript> getAllTranscriptByIdStudent(@PathVariable("code") String code){
-//        return transcriptService.getAllListTranScript(code);
-//    }
-
     @GetMapping("/get")
     public List<Transcript> getTranScriptBySemesterAndYear(@RequestParam("student_code") String studentCode,
                                                            @RequestParam("semester") String semester,
